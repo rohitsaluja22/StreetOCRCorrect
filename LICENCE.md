@@ -1,4 +1,4 @@
-Copyright (c) 2017 Framework-for-Error-Detection-and-Corrections-in-Indic-OCR
+Copyright (c) 2019 StreetOCRCorrect: An Interactive Framework for OCR Corrections in Chaotic Indian Street Videos
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
