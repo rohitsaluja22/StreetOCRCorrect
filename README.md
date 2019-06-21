@@ -1,4 +1,9 @@
 # StreetOCRCorrect
+
+# Demo
+The demo video of the backend model used in our framework is available here: https://drive.google.com/open?id=1xetAEINYOlS-HUgFj71DRMtdr8FMVBtc
+
+# Using StreetOCRCorrect
 1. In params.cfg: only edit the video file name, it should be relative or absolute w.r.t the exe.
 	 EXAMPLE1: file_name = video_name.mp4
 2. To annotate for 1 vehicle, process is straightforward
