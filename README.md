@@ -3,6 +3,38 @@
 # Demo
 The demo video of the backend model used in our framework is available here: https://drive.google.com/open?id=1xetAEINYOlS-HUgFj71DRMtdr8FMVBtc
 
+
+# MODULE1: Steps to Extract Multiple Single Vehicle Video Clips:
+
+# Installations (Tested on Ubuntu 16.04 with 4GB GeForce 940MX):
+install opencv and pydarknet from https://pypi.org/project/yolo34py/ i.e.:-
+'''
+pip3 install opencv-python
+pip3 install opencv_contrib-python # For MedianFlow Tracker
+pip3 install numpy
+pip3 install yolo34py-gpu
+cd ExtractClips
+'''
+
+download weights and config files: https://github.com/madhawav/YOLO3-4-Py/blob/master/download_models.sh
+folder structure should be as follows:
+ExtractClips/cfg/coco.data
+ExtractClips/cfg/yolov3.cfg
+ExtractClips/weights/yolov3.weights
+ExtractClips/data/coco.names
+
+# (Ignore if you want to run on complete video) trim 5 secs of video:-
+'''
+
+avconv -i 001.mp4 -ss 00:01:27 -t 00:00:5 -codec copy output.mp4
+'''
+
+# Usage for Module1:
+'''
+python3 extractCropVidoes.py output.mp4
+python3 parse_json_videogen.py --file output.mp4
+'''
+
 # Using StreetOCRCorrect
 1. In params.cfg: only edit the video file name, it should be relative or absolute w.r.t the exe.
 	 EXAMPLE1: file_name = video_name.mp4
