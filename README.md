@@ -23,7 +23,7 @@ ExtractClips/cfg/yolov3.cfg
 ExtractClips/weights/yolov3.weights
 ExtractClips/data/coco.names
 
-# (Ignore if you want to run on complete video) trim 5 secs of video:-
+(Ignore if you want to run on complete video) trim 5 secs of video:-
 ```
 avconv -i 001.mp4 -ss 00:01:27 -t 00:00:5 -codec copy output.mp4
 ```
