@@ -23,21 +23,24 @@ ExtractClips/cfg/yolov3.cfg
 ExtractClips/weights/yolov3.weights
 ExtractClips/data/coco.names
 
-(Ignore if you want to run on complete video) trim 5 secs of video:-
+Download and trim input video:-
 ```
-avconv -i 001.mp4 -ss 00:01:27 -t 00:00:5 -codec copy output.mp4
+Download one of the video with youtube-dl or any youtube downloader (make sure you download highest quality version for better results)
+rename the downloaded video as 001.mp4
+avconv -i 001.mp4 -ss 00:01:27 -t 00:00:5 -codec copy input.mp4 # (Ignore if you want to run on complete video) 
 ```
 
 # Usage for Module1:
 ```
-python3 extractCropVidoes.py output.mp4
-python3 parse_json_videogen.py --file output.mp4
-cd ..
+python3 extractCropVideosJson.py input.mp4
+python3 parse_json_videogen.py --file input.mp4 
 ```
+The above steps will store vehicle clips in a new folder input, you will have to filter the clips where license plates are not readable manually or ignore them while using the Module 2 (given below). We are working on improving this part by using confidence scores from our License Plate Recognition Models.
 
 # Module2: Using StreetOCRCorrect
-1. In params.cfg: only edit the video file name, it should be relative or absolute w.r.t the exe.
-	 EXAMPLE1: file_name = video_name.mp4
+cd ..
+1. In params.cfg: only edit the folder name, it should be relative or absolute w.r.t the exe.
+	 EXAMPLE1: folder_name = ExtractClips/input/
 2. To annotate for 1 vehicle, process is straightforward
 	a. Press start button when vehicle enters the frame
 	b. Annotate the vehicle
