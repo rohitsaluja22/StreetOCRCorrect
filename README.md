@@ -32,6 +32,7 @@ avconv -i 001.mp4 -ss 00:01:27 -t 00:00:5 -codec copy input.mp4 # (Ignore if you
 
 # Usage for Module1:
 ```
+#ffmpeg -i input.mp4 -c copy -metadata:s:v:0 rotate=180 input1.mp4 # use this in case your video is inverted
 python3 extractCropVideosJson.py input.mp4
 python3 parse_json_videogen.py --file input.mp4 
 ```
