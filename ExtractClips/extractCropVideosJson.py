@@ -176,7 +176,7 @@ class Analyse:
 			if imgcv is not None:
 				vidheight, vidwidth, ch = imgcv.shape
 			#print("vidheight, vidwidth",vidheight, vidwidth)
-			if not ret or count==2000:
+			if not ret:# or count==2000:
 				break
 			print(count)
 			if count==0 or count%10==0:
