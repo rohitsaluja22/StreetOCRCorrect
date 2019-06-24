@@ -35,12 +35,12 @@ avconv -i 001.mp4 -ss 00:01:27 -t 00:00:5 -codec copy input.mp4 # (Ignore if you
 python3 extractCropVideosJson.py input.mp4
 python3 parse_json_videogen.py --file input.mp4 
 ```
-The above steps will store vehicle clips in a new folder "output", you will have to filter the clips where license plates are not readable manually or ignore them while using the Module 2 (given below). We are working on improving this part by using confidence scores from our License Plate Recognition Models.
+The above steps will store vehicle clips in a new folder "input", you will have to filter the clips where license plates are not readable manually or ignore them while using the Module 2 (given below). We are working on improving this part by using confidence scores from our License Plate Recognition Models.
 
 # Module2: Using StreetOCRCorrect
 cd ..
 1. In params.cfg: only edit the folder name, it should be relative or absolute w.r.t the exe.
-	 EXAMPLE1: folder_name = ExtractClips/output/
+	 EXAMPLE1: folder_name = ExtractClips/input/
 2. To annotate for 1 vehicle, process is straightforward
 	a. Press start button when vehicle enters the frame
 	b. Annotate the vehicle
