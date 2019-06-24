@@ -47,7 +47,7 @@ class VideoGen:
 	def video_writer_init(self,ID):
 		width,height = (self.maxDict[ID][2] - self.maxDict[ID][0]), (self.maxDict[ID][3] - self.maxDict[ID][1])
 		os.makedirs(self.filename_prefix,exist_ok=True)
-		os.makedirs(self.filename_prefix+"_images",exist_ok=True)
+		#os.makedirs(self.filename_prefix+"_images",exist_ok=True)
 		vid_name = ID + ".avi"
 		outfile = os.path.join(self.filename_prefix,vid_name)
 		fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
