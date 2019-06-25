@@ -33,8 +33,8 @@ avconv -i 001.mp4 -ss 00:01:27 -t 00:00:5 -codec copy input.mp4 # (Ignore if you
 # Usage for Module1:
 ```
 #ffmpeg -i input.mp4 -c copy -metadata:s:v:0 rotate=180 input1.mp4 # use this in case your video is inverted
-python3 extractCropVideosJson.py input.mp4
-python3 parse_json_videogen.py --file input.mp4 
+python3 extractCropVideosJson.py input.mp4 0# make 0 as 1 if you want to rotate video by 180 degrees
+python3 parse_json_videogen.py --file input.mp4 --rotate_flag 0 > ../Suggestions.txt# make rotate_flag as 1 if you want to rotate video by 180 degrees
 ```
 The above steps will store vehicle clips in a new folder "input", you will have to filter the clips where license plates are not readable manually or ignore them while using the Module 2 (given below). We are working on improving this part by using confidence scores from our License Plate Recognition Models.
 
