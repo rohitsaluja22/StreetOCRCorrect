@@ -33,7 +33,7 @@ class Analyse:
 
 	# bbox argument = [x1,y1,x2,y2]
 	def add_bbox(self,ID, bbox):
-		print("addingbbox", bbox)
+		#print("addingbbox", bbox)
 		# global l, self.NUMBER_VEHICLE
 		bbox = (bbox[0],bbox[1],bbox[2]-bbox[0],bbox[3]-bbox[1])
 		tracker = cv2.TrackerMedianFlow_create() #cv2.TrackerGOTURN_create() #cv2.TrackerKCF_create()##cv2.TrackerCSRT_create()#   # cv2.TrackerMedianFlow_create()
@@ -201,7 +201,7 @@ class Analyse:
 						if (x2-x1)>50 and (y2-y1)>50 and x1>100 and x2<vidwidth-120 and y1>100 and y2<vidheight-100:
 							bbox = [x1,y1,x2,y2]
 							bbox = [max(0,x1),max(y1,0),min(vidwidth-1,x2),min(vidheight-1,y2)]
-							print("bboxcarbikebus",bbox)
+							#print("bboxcarbikebus",bbox)
 							self.add_bbox(id,bbox)
 							'''#Comment out to store yolo images
 							imgcv[y1,x1:x2] = 0
