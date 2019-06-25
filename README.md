@@ -20,10 +20,12 @@ cd ExtractClips
 
 download weights and config files: https://github.com/madhawav/YOLO3-4-Py/blob/master/download_models.sh
 folder structure should be as follows:
+```
 ExtractClips/cfg/coco.data
 ExtractClips/cfg/yolov3.cfg
 ExtractClips/weights/yolov3.weights
 ExtractClips/data/coco.names
+```
 
 Download and host ANPR API:-
 ```
