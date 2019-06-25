@@ -184,7 +184,7 @@ class Analyse:
 				ys = time.time()
 				img_darknet = Image(imgcv)
 				results = self.net.detect(img_darknet)
-				print(results)
+				#print(results)
 				print("yolo time taken: ",time.time()-ys)
 				yolo_time += (time.time()-ys)
 
@@ -194,8 +194,8 @@ class Analyse:
 					label = str(cat.decode("utf-8"))
 					x,y,w,h = bounds
 					x,y,w,h = int(x),int(y),int(w),int(h)
-					print(label)
-					if label in ["car","motorbike","bus"]:
+					#print(label)
+					if label in ["car","motorbike","bus","truck"]:
 						x1,y1,x2,y2 = x-w//2,y-h//2,x+w//2,y+h//2
 						id = int(self.NUMBER_VEHICLE)
 						if (x2-x1)>50 and (y2-y1)>50 and x1>100 and x2<vidwidth-120 and y1>100 and y2<vidheight-100:
@@ -216,7 +216,7 @@ class Analyse:
 			else:
 				ts = time.time()
 				bboxs = self.track(imgcv)
-				print(bboxs)
+				#print(bboxs)
 				for boxes in bboxs:
 					Id = boxes[4]
 					bb = [max(0,boxes[0]),max(boxes[1],0),min(vidwidth-1,boxes[2]),min(vidheight-1,boxes[3])]
@@ -247,5 +247,6 @@ else:
 	anl = Analyse()
 	Rotate180Flag = 1
 	if len(sys.argv) == 2: Rotate180Flag = 0
-	print(Rotate180Flag)
+	if len(sys.argv) == 3: Rotate180Flag = int(sys.argv[2])
+	print("Rotate180Flag",Rotate180Flag)
 	ans = anl.main_func(sys.argv[1], Rotate180Flag)
