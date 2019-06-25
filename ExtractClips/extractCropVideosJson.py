@@ -36,7 +36,7 @@ class Analyse:
 		print("addingbbox", bbox)
 		# global l, self.NUMBER_VEHICLE
 		bbox = (bbox[0],bbox[1],bbox[2]-bbox[0],bbox[3]-bbox[1])
-		tracker = cv2.TrackerMedianFlow_create()#cv2.TrackerCSRT_create()#   # cv2.TrackerCSRT_create()
+		tracker = cv2.TrackerMedianFlow_create() #cv2.TrackerGOTURN_create() #cv2.TrackerKCF_create()##cv2.TrackerCSRT_create()#   # cv2.TrackerMedianFlow_create()
 		init = False
 		p = self.vehicals(ID, bbox,tracker,init)
 		self.l.append(p)
@@ -77,7 +77,7 @@ class Analyse:
 				obj.init = True
 
 	### use of this function????
-	def update_bbox(self,ID,bbox):
+	def update_bbox(self,ID,bbox,vidwidth,vidheight):
 		global FRAME
 		bbox = (bbox[0],bbox[1],bbox[2]-bbox[0],bbox[3]-bbox[1])
 		for obj in self.l:
@@ -87,11 +87,11 @@ class Analyse:
 				obj.tracker.init(FRAME, obj.bbox)
 				if bbox[1] <= 100:
 					self.del_bbox(obj.ID)
-				elif bbox[1]+bbox[3] >= 980:
+				elif bbox[1]+bbox[3] >= vidheight-100:
 					self.del_bbox(obj.ID)
 				elif bbox[0] <= 100:
 					self.del_bbox(obj.ID)
-				elif bbox[0]+bbox[2] >= 1800:
+				elif bbox[0]+bbox[2] >= vidwidth-120:
 					self.del_bbox(obj.ID)
 				# if obj.speed>50:
 				#     del_bbox(obj.ID)
@@ -148,7 +148,7 @@ class Analyse:
 			json.dump(self.data_rev, fp, sort_keys=True, indent=4)
 
 
-	def main_func(self,filename):
+	def main_func(self,filename, Rotate180Flag):
 		begin = time.time()
 		total_time, yolo_time, classifier_time, number_of_images_classified, tracker_time = 0,0,0,0,0
 		self.uniquename = filename.split(".")[0]
@@ -173,10 +173,11 @@ class Analyse:
 
 		while(cap.isOpened()):
 			ret, imgcv = cap.read()
+			if(Rotate180Flag): imgcv = cv2.flip(imgcv, -1 )
 			if imgcv is not None:
 				vidheight, vidwidth, ch = imgcv.shape
 			#print("vidheight, vidwidth",vidheight, vidwidth)
-			if not ret:# or count==2000:
+			if not ret or count==2000:
 				break
 			print(count)
 			if count==0 or count%10==0:
@@ -219,7 +220,7 @@ class Analyse:
 				for boxes in bboxs:
 					Id = boxes[4]
 					bb = [max(0,boxes[0]),max(boxes[1],0),min(vidwidth-1,boxes[2]),min(vidheight-1,boxes[3])]
-					self.update_bbox(Id,bb)
+					self.update_bbox(Id,bb,vidwidth,vidheight)
 				print("Tracker time taken: ", time.time()-ts)
 				yolo_time += (time.time()-ts)
 
@@ -241,7 +242,10 @@ class Analyse:
 		print("\nTracker time = ", tracker_time)
 
 
-if (len(sys.argv) < 2): print("USAGE: python3 extractCropVideosJson.py <video_name.mp4>")
+if (len(sys.argv) < 2): print("USAGE: python3 extractCropVideosJson.py <video_name.mp4> Rotate180Flag")
 else: 
 	anl = Analyse()
-	ans = anl.main_func(sys.argv[1])
+	Rotate180Flag = 1
+	if len(sys.argv) == 2: Rotate180Flag = 0
+	print(Rotate180Flag)
+	ans = anl.main_func(sys.argv[1], Rotate180Flag)

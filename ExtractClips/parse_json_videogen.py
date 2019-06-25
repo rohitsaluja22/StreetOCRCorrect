@@ -2,16 +2,34 @@ import cv2
 import argparse, json, math, os
 import numpy as np
 from collections import defaultdict
-
+import os, sys
+import configparser
+from time import sleep
+from tkinter import ttk
+import threading
+import time
+import requests
+import ujson as json
+import time
+import platform
+import numpy as np
+import argparse
+import io
+import base64
+from PIL import Image
+from collections import OrderedDict
+base_path = os.path.dirname(os.path.abspath(__file__))
 def arg_parser():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--file', type=str, help='input video file name')
+	parser.add_argument('--Rotate180Flag', type=int, help='make it 1 if you want to rotate video by 180 degree')
 	return parser.parse_args()
 
 class VideoGen:
 
-	def __init__(self,video_file):
+	def __init__(self,video_file, Rotate180F):
 		self.filename = video_file
+		self.Rotate180Fl = Rotate180F
 		self.filename_prefix = os.path.splitext(video_file)[0]
 		self.json_file = self.filename_prefix + '_bboxdata.json' 
 		self.json_file_rev = self.filename_prefix + '_bboxdata_rev.json'
@@ -25,6 +43,7 @@ class VideoGen:
 		self.vid_fps = int(self.cap.get(cv2.CAP_PROP_FPS))
 		self.video_writer_instances = {}
 		self.maxDict = {}
+		self.suggDict = {}
 
 	def parse_json(self,filename):
 		with open(filename, 'r') as fp:
@@ -48,11 +67,11 @@ class VideoGen:
 		width,height = (self.maxDict[ID][2] - self.maxDict[ID][0]), (self.maxDict[ID][3] - self.maxDict[ID][1])
 		os.makedirs(self.filename_prefix,exist_ok=True)
 		#os.makedirs(self.filename_prefix+"_images",exist_ok=True)
-		vid_name = ID + ".avi"
+		vid_name = ("%05i" % int(ID)) + ".avi"
 		outfile = os.path.join(self.filename_prefix,vid_name)
 		fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
-		print(outfile, 0, self.vid_fps//3, (width,height))
-		video = cv2.VideoWriter(outfile, fourcc, self.vid_fps//3, (width,height))
+		#print(outfile, 0, self.vid_fps, (width,height))
+		video = cv2.VideoWriter(outfile, fourcc, self.vid_fps, (width,height))
 		return video
 
 	def get_video_writer_instance(self,ID):
@@ -77,18 +96,83 @@ class VideoGen:
 				else:
 					self.maxDict[ID] = [min(x,self.maxDict[ID][0]), min(y,self.maxDict[ID][1]), max(x+w,self.maxDict[ID][2]), max(y+h,self.maxDict[ID][3])]
 				
-						
+	def test_model(self,img,x, y, w, h):
+		rows = img.shape[0]
+		cols = img.shape[1]
+		new_x = min(x,rows-1) if x > 0 else 0
+		new_y = min(y,cols-1) if y > 0 else 0
+
+		new_h = min(int(1.15*h), rows-1)
+		new_w = min(int(1.05*w), cols-1)
+
+		model_h = 260
+		model_w = 480
+
+		h_aspect = int((new_w*model_h)/model_w)
+
+		if h_aspect < new_h:
+			temp = new_y + (new_h - h_aspect)
+			new_y = min(rows-1, temp)
+		else:
+			temp = new_y - (h_aspect - new_h)
+			new_y = max(0, temp)
+
+		new_h = h_aspect
+
+		# crop image
+		crop_img = img[new_y:new_y+new_h, new_x:new_x+new_w]
+
+		# convert to Bytes using Pillow and BytesIO
+		#pil_crop = Image.fromarray(crop_img)
+		#inpByteArr = io.BytesIO()
+		#pil_crop.save("cropped.png", format='PNG')
+		#imgpred = open("cropped.png", 'rb').read()
+		#print(imgpred.type())
+		_,imagedata = cv2.imencode('.PNG',crop_img)
+		imgpred1 = base64.b64encode(imagedata).decode("ascii")
+		#inpByteArr = inpByteArr.getvalue()
+		#cv2.imshow('image',img)
+		#cv2.waitKey(0)
+		endpoint = 'predict_debug'
+		PORT = 5000
+		url = 'http://localhost:%d/'%(PORT) + endpoint # Neeti server URL
+
+		#fname = '.'.join(os.path.basename(img_path).split('.')[:-1])
+		#if img is None:
+		#	img = open(img_path, 'rb').read()
+	
+		#name = "model_files/"+fname # if saving scores on server side: scores_data/$name/fname
+		files = {'img':imagedata, 'frame_no':"", 'index':str(0), 'mask':json.dumps({})}
+		a = time.time()
+
+		rdata = requests.request('post', url = url, files=files)
+		b = time.time() - a
+
+		if platform.system() == 'Windows' or True:
+			r = json.loads(rdata.json())
+		else:
+			r = rdata.json()
+
+		text = r.get('text','[]')
+		score1 = r.get('score1','[]')
+		#print(score1)
+		conf = 1
+		for i in score1[0]:#.split("], [")[0].replace("[","").split(","):
+			conf = conf*(i)/100
+		return 	text.split("', '")[0].replace("[\'",""), conf		
 
 	def generate_id_wise_video(self):
 		frame_count = 0
+		
 		frames = list(self.data.keys()) # list of strings
-
+		
 		width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))   # float
 		height = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)) # float
 		self.get_maxboundary()
 		while(self.cap.isOpened()):
 			ret, imgcv = self.cap.read()
-			if not ret or frame_count==int(frames[-1]):
+			if(self.Rotate180Fl): imgcv = cv2.flip(imgcv, -1 )
+			if not ret or frame_count==int(frames[-1]):# or frame_count > 5:
 				break
 			id_bbox_data = self.data.get(str(frame_count))
 			#print(frame_count)
@@ -98,6 +182,18 @@ class VideoGen:
 			for ID, bbox in id_bbox_data.items():
 				video_writer = self.get_video_writer_instance(ID)
 				x,y,w,h = bbox
+				conf = 0
+				pred, conf = self.test_model(imgcv,x,y,w,h)
+				if (conf < 0.0001) or (conf is None) : continue#TO DO REVIEW THIS LOGIC
+				if int(ID) not in self.suggDict:
+					#print("here1")
+					self.suggDict[int(ID)] = {}
+				if pred not in self.suggDict[int(ID)]:
+					#print("here2")
+					self.suggDict[int(ID)][pred] = 0
+				self.suggDict[int(ID)][pred] += 1
+				#print(self.suggDict)
+				#print(ID ,pred, conf)
 				#imgcv[y,x:x+w] = 0
 				#imgcv[y+h,x:x+w] = 0
 				#imgcv[y:y+h,x] = 0
@@ -126,11 +222,11 @@ class VideoGen:
 
 				blur = cv2.GaussianBlur(crop.copy(),(21,21),0)
 				blur[y-y1:y-y1+h,x-x1:x-x1+w] = crop[y-y1:y-y1+h,x-x1:x-x1+w]
-				#uncomment 
-				'''blur[y-y1:y-y1+h,x-x1] = 0
-				blur[y-y1:y-y1+h,x-x1+w] = 0
-				blur[y-y1,x-x1:x-x1+w] = 0
-				blur[y-y1+h,x-x1:x-x1+w] = 0'''
+				#uncomment/comment for box in video
+				#blur[y-y1:y-y1+h,x-x1] = 0
+				#blur[y-y1:y-y1+h,x-x1+w] = 0
+				#blur[y-y1,x-x1:x-x1+w] = 0
+				#blur[y-y1+h,x-x1:x-x1+w] = 0
 				#print(frame_count, blur.shape)
 				#cv2.imwrite(os.path.join(self.filename_prefix+"_images",ID+"_"+str(frame_count)+".jpg"),blur)
 				video_writer.write(blur)
@@ -145,6 +241,18 @@ class VideoGen:
 							video_writer.release()
 			frame_count += 1
 		# used list() because we're popping keys at realtime and want the list to be static
+		#print("self.suggDict", self.suggDict)
+		#print("self.suggDict Sorted", sorted(self.suggDict))
+		for id in sorted(self.suggDict):
+			#print("self.suggDict Inside", self.suggDict[id])
+			dd = sorted(self.suggDict[id].items(),key = lambda index:index[1])
+			#print(id, dd)
+			dd.reverse()
+			ddSorted = OrderedDict(dd)
+			self.suggDict[id] = ddSorted
+			listSorted = list(ddSorted.keys())
+			#base_path + "/" + self.filename_prefix + "/"+ 
+			print(("%05i" % id)+".avi\t"+"\t".join(listSorted))
 		for ID in list(self.video_writer_instances.keys()):
 			video_writer = self.video_writer_instances.pop(ID,None)
 			if video_writer:
@@ -152,6 +260,6 @@ class VideoGen:
 
 args = arg_parser()
 
-video_gen = VideoGen(args.file)
+video_gen = VideoGen(args.file,args.Rotate180Flag)
 video_gen.parse_metadata_from_json()
 video_gen.generate_id_wise_video()
