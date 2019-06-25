@@ -48,9 +48,10 @@ cd ExtractClips
 mv StreetOCRDemo/StreetOCRDemoVideo.mp4 .
 python3 extractCropVideosJson.py StreetOCRDemoVideo.mp4 1# make last term 0 or omit it if you DO NOT want to rotate video by 180 degrees while reading
 python3 parse_json_videogen.py --file StreetOCRDemoVideo.mp4 --Rotate180Flag 1 > Suggestions # make Rotate180Flag as 0 if you DO NOT want to rotate video by 180 degrees while reading/writing
+cp Suggestions ../../StreetOCRCorrect
 ```
 The above steps will extract and store single vehicle clips in a new folder "ExtractClips/StreetOCRDemoVideo". The same are also present in StreetOCRDemo/StreetOCRDemoVideoSingleVehicleClips to match (or check in case you are not able to run this).
-The next Module takes "Suggestions" generated in ExtractClips/
+The next Module takes "Suggestions" generated in ExtractClips/. Make sure you have copied Suggestions to folder "StreetOCRCorrect/"
 
 # Module2: Using StreetOCRCorrect
 cd ..
