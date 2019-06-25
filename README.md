@@ -30,7 +30,7 @@ Download and host ANPR API:-
 wget - r https://drive.google.com/open?id=1ywfwJPlHf9wfqqkAX6HKq-CI46WZbinB
 #Open a new tab with Ctrl+Shit+Tab or Ctrl+Tab
 chmod +x StreetOCRDemo/ANPR_UbuntuDemo
-./StreetOCRDemo/ANPR_UbuntuDemo
+./StreetOCRDemo/ANPR_UbuntuDemo #note that you might need to bypass proxy to run this
 ```
 Download and trim input video:-
 ```
@@ -39,11 +39,13 @@ rename the downloaded video as 001.mp4
 avconv -i 001.mp4 -ss 00:01:27 -t 00:00:5 -codec copy input.mp4 # (Ignore if you want to run on complete video) 
 ```
 
-# Usage for Module1:
+# Usage for Module1 for generating clips via Detection and Tracking:
 ```
-#ffmpeg -i input.mp4 -c copy -metadata:s:v:0 rotate=180 input1.mp4 # use this in case your video is inverted
-python3 extractCropVideosJson.py input.mp4 0# make 0 as 1 if you want to rotate video by 180 degrees
-python3 parse_json_videogen.py --file input.mp4 --rotate_flag 0 > ../Suggestions.txt# make rotate_flag as 1 if you want to rotate video by 180 degrees
+Come back to ExtractClips folder in older (or a new) tab, and move the demo mp4 file from StreetOCRDemo/ to ExtractClips/
+cd ExtractClips
+mv StreetOCRDemo/StreetOCRDemoVideo.mp4 ../ExtractClips/
+python3 extractCropVideosJson.py StreetOCRDemoVideo.mp4 1# make last term 0 or omit it if you DO NOT want to rotate video by 180 degrees while reading
+python3 parse_json_videogen.py --file StreetOCRDemoVideo.mp4 --Rotate180Flag 1 > Suggestions > ../Suggestions.txt# make Rotate180Flag as 0 if you DO NOT want to rotate video by 180 degrees while reading/writing
 ```
 The above steps will store vehicle clips in a new folder "input", you will have to filter the clips where license plates are not readable manually or ignore them while using the Module 2 (given below). We are working on improving this part by using confidence scores from our License Plate Recognition Models.
 
