@@ -1,7 +1,12 @@
-#High quality versions (youtube-dl not working, download from keepvid.pro download highest quality videos without sound)
+#High resolution videos (youtube-dl not working, download from keepvid.pro download highest quality videos without sound)
+https://www.youtube.com/watch?v=DBKHzo2u6Z4
+https://www.youtube.com/watch?v=V3r_aqNy3a0
+https://www.youtube.com/watch?v=uenBM7OV3oY
+https://www.youtube.com/watch?v=L4sZ0vBd9Gw
+https://www.youtube.com/watch?v=77MpjKvOgz0
 
 
-#Low quality videos
+#Low resolution videos
 youtube-dl https://www.youtube.com/watch?v=9n8aFscUYz8
 youtube-dl https://www.youtube.com/watch?v=HjBAyA30G6M
 youtube-dl https://www.youtube.com/watch?v=YxYcq9xKegI
