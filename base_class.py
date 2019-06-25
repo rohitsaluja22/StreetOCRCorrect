@@ -3,9 +3,13 @@ import cv2
 import configparser
 from time import sleep
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk , StringVar
 import threading
 import time
+from os import listdir
+from os.path import isfile, join
+import random
+from collections import Counter
 
 # indexes
 ID_IDX,ANNOT_IDX,START_FRAME_IDX,END_FRAME_IDX = [0,1,2,3]
@@ -37,16 +41,31 @@ class Skeleton():
 		self.collected_frames = []
 		self.last_annotation = []
 		self.ID = 1 # future ID of annotation
+		self.FirstVideoFlag = 1
 		# keyboard shortcuts
 		self.key_pause_play = self.key_entry = self.key_exit = self.key_rewind_1 = self.key_forward_1 = None
-		self.key_submit = self.key_rewind_2 = self.key_forward_2 = None
+		self.key_submit = self.key_rewind_2 = self.key_forward_2 = self.key_Next = None
+		self.onlyfiles = []
+		self.fileIndent = 0
+		self.sendSuggestions = []
+		self.suggestions = {}
+
 
 	# will set all video details and initialize video capture stream
 	def set_video_details(self):
-		self.filename = self.config['INPUT']['file_name'].strip()
+		mypath = self.config['INPUT']['folder_name'].strip()
+		#print(mypath)
+		if(self.FirstVideoFlag):
+			self.onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and (not (f.split(".")[-1] == "txt")))]
+			self.FirstVideoFlag = 0
+		self.filename = mypath + self.onlyfiles[self.fileIndent]
+		print(self.filename)
 		self.filename_pref, ext = os.path.splitext(self.filename)
-		
+
 		self.vs = cv2.VideoCapture(os.path.join(get_application_path(),self.filename)) # capture video frames, 0 is your default video camera
+
+		#print(s1)
+		#print(sugg)
 		self.fps = self.vs.get(cv2.CAP_PROP_FPS)
 		self.vid_width = int(self.vs.get(cv2.CAP_PROP_FRAME_WIDTH))
 		self.vid_height = int(self.vs.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -61,6 +80,25 @@ class Skeleton():
 			self.length = 90000
 		self.fps = int(self.fps)
 		self.length = int(self.length)
+		ok, self.frame = self.vs.read()
+		self.length = self.vs.get(cv2.CAP_PROP_FRAME_COUNT)
+		self.sendSuggestions = self.suggestions[self.onlyfiles[self.fileIndent]]
+		#print(self.sendSuggestions)
+		'''ma = (int)(self.length / 20)
+		count = 1
+		s1 = []
+		while (self.frame is not None):
+			ok, self.frame = self.vs.read()
+			if (count % ma == 0):
+				k = random.randrange(0, suggesstions.__len__(), 1)
+				s1.append(suggesstions[k])
+			count = count + 1
+		coun = Counter(s1)
+		sugg = coun.most_common(5)
+		self.sendSuggestions = []
+		for ltter, count in sugg:
+			self.sendSuggestions.append(ltter)
+		print("Suggestion:",self.sendSuggestions)'''
 		# os.makedirs(self.filename_pref,exist_ok=True)
 
 	def get_config(self):
@@ -68,6 +106,13 @@ class Skeleton():
 		self.config = configparser.ConfigParser()
 		# filename = sys.argv[1].split('.')[0]
 		self.config.read(os.path.join(get_application_path(), 'params.cfg'))
+		sList = [line.rstrip('\n') for line in open(path+"/Suggestions.txt", 'r')]
+		#print(sList)
+		for x in sList:
+			x1 = x.split("\t")
+			self.suggestions[x1[0]] = x1[1:]
+		#print(self.suggestions)
+
 
 	def discard_last_annotation(self):
 		self.is_paused = True
@@ -148,14 +193,17 @@ class Skeleton():
 		return line[::-1] # returning the reverse of the line, since SEEK operates in reverse
 
 	def get_last_annotated_frame(self):
-		self.f = open(os.path.join(get_application_path(), self.filename_pref + '_log.txt'),'a+')
-		self.f_deleted = open(os.path.join(get_application_path(), self.filename_pref + '_deleted_log.txt'),'a+')
-		self.f_time_log = open(os.path.join(get_application_path(), self.filename_pref + '_log_t.txt'),'a+')
+
+		self.f = open(os.path.join(get_application_path(),'log.txt'),'a+')
+		self.f_deleted = open(os.path.join(get_application_path(),'deleted_log.txt'),'a+')
+		self.f_time_log = open(os.path.join(get_application_path(),'log_t.txt'),'a+')
 		self.log_list = []
 		# restore frame from logs
 		self.f.seek(0)
 		lines = self.f.readlines()
 		restore_frame = int(lines[-1].split("\t")[END_FRAME_IDX]) if lines != [] else 0
+		if(restore_frame >= self.length):
+			restore_frame = 0
 		restore_ID = int(lines[-1].split("\t")[ID_IDX]) if lines != [] else 0
 		self.last_annotation = lines[-1].split() if lines != [] else []
 
@@ -179,7 +227,7 @@ class Skeleton():
 		self.frame_x = self.frame_no - 1
 		self.is_exit = True
 		print("%s, EXIT VEHICLE CALLBACK"%(self.get_localtime()), file=self.f_time_log, flush=True)
-		self.entry["state"] = tk.DISABLED
+		#self.entry["state"] = tk.DISABLED
 		self.submit_box["state"] = tk.NORMAL
 		# self.collected_frames.append([self.frame_no,self.frame])
 
@@ -189,9 +237,9 @@ class Skeleton():
 			if name == "entry":
 				button["state"] = tk.NORMAL
 			if name == "exit":
-				button["state"] = tk.DISABLED
+				button["state"] = tk.NORMAL
 			button.config(bg='#d9d9d9',activebackground='#d9d9d9')
-		self.submit_box["state"] = tk.DISABLED
+		self.submit_box["state"] = tk.NORMAL
 
 	def get_localtime(self):
 		localtime = time.asctime( time.localtime(time.time()))
@@ -241,7 +289,13 @@ class Skeleton():
 					if name == "exit":
 						button["state"] = tk.NORMAL
 						button.config(bg='#d9d9d9',activebackground='#d9d9d9')
-				self.submit_box["state"] = tk.DISABLED
+				self.submit_box["state"] = tk.NORMAL
+
+	def nextfile(self):
+		self.fileIndent = (self.fileIndent + 1) % len(self.onlyfiles)
+		#if len(filenameTemp) > self.filename: self.filename = self.filename.split("/")[0] + "/" + 
+		self.set_video_details()
+		print(self.filename)
 
 	def forward(self, seconds):
 		# subtracting 1 for looping once which will consume 1 frame
