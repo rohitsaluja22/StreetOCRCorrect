@@ -30,7 +30,7 @@ ExtractClips/data/coco.names
 Download and host ANPR API:-
 ```
 Download this google drive folder https://drive.google.com/open?id=1ywfwJPlHf9wfqqkAX6HKq-CI46WZbinB
-#Open a new tab with Ctrl+Shit+Tab or Ctrl+Tab
+#Open a new tab with Ctrl+Shift+Tab
 chmod +x StreetOCRDemo/ANPR_UbuntuDemo
 ./StreetOCRDemo/ANPR_UbuntuDemo #note that you might need to bypass proxy to run this
 ```
