@@ -23,6 +23,13 @@ ExtractClips/cfg/yolov3.cfg
 ExtractClips/weights/yolov3.weights
 ExtractClips/data/coco.names
 
+Download and host ANPR API:-
+```
+wget - r https://drive.google.com/open?id=1ywfwJPlHf9wfqqkAX6HKq-CI46WZbinB
+#Open a new tab with Ctrl+Shit+Tab or Ctrl+Tab
+chmod +x StreetOCRDemo/ANPR_UbuntuDemo
+./StreetOCRDemo/ANPR_UbuntuDemo
+```
 Download and trim input video:-
 ```
 Download one of the video with youtube-dl or any youtube downloader (make sure you download highest quality version for better results)
