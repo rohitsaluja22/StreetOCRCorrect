@@ -13,6 +13,8 @@ pip3 install opencv-python
 pip3 install opencv_contrib-python # For MedianFlow Tracker
 pip3 install numpy
 pip3 install yolo34py-gpu
+pip3 install ujson
+pip3 install PILLOW
 cd ExtractClips
 ```
 
