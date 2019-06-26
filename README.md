@@ -9,6 +9,7 @@ The demo video of the backend model used in our framework is available here: htt
 # Installations (Tested on Ubuntu 16.04 with 4GB GeForce 940MX):
 install opencv and pydarknet from https://pypi.org/project/yolo34py/ i.e.:-
 ```
+#use "virtualenv -p python3 StreetOCR" if using virtual environment
 pip3 install opencv-python
 pip3 install opencv_contrib-python # For MedianFlow Tracker
 pip3 install numpy
