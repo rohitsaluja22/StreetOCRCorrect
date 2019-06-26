@@ -34,14 +34,14 @@ Download this google drive folder https://drive.google.com/open?id=1ywfwJPlHf9wf
 chmod +x StreetOCRDemo/ANPR_UbuntuDemo
 ./StreetOCRDemo/ANPR_UbuntuDemo #note that you might need to bypass proxy to run this
 ```
-Download and trim input video:-
+Optional: Download and trim youtube video:-
 ```
-Download one of the video with youtube-dl or any youtube downloader (make sure you download highest quality version for better results)
+Download one of the videos with highest resolution given in downloadYoutubeChaoticVideos
 rename the downloaded video as 001.mp4
 avconv -i 001.mp4 -ss 00:01:27 -t 00:00:5 -codec copy input.mp4 # (Ignore if you want to run on complete video) 
 ```
 
-# Usage for Module1 for extracting single vehicle clips via Detection and Tracking:
+# Usage for Module1 for extracting single vehicle clips via Detection and Tracking on Demo Video:
 ```
 Come back to ExtractClips folder in older (or a new) tab, and move the demo mp4 file from StreetOCRDemo/ to ExtractClips/:-
 cd ExtractClips
