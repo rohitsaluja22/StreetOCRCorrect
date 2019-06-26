@@ -64,7 +64,10 @@ The above steps will extract and store single vehicle clips in a new folder "Ext
 The next Module takes "Suggestions" generated in ExtractClips/. Make sure you have copied Suggestions.txt to folder "StreetOCRCorrect/"
 
 # Module2: Using StreetOCRCorrect
+```
 cd ..
+python3 video_streamer.py
+```
 1. In params.cfg: 
 	a. only edit the folder name, it should be relative or absolute w.r.t the exe.
 	   EXAMPLE: folder_name = ExtractClips/StreetOCRDemoVideo/
