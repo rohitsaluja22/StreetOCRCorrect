@@ -65,8 +65,10 @@ The next Module takes "Suggestions" generated in ExtractClips/. Make sure you ha
 
 # Module2: Using StreetOCRCorrect
 cd ..
-1. In params.cfg: only edit the folder name, it should be relative or absolute w.r.t the exe.
-	 EXAMPLE: folder_name = ExtractClips/StreetOCRDemoVideo/
+1. In params.cfg: 
+	a. only edit the folder name, it should be relative or absolute w.r.t the exe.
+	   EXAMPLE: folder_name = ExtractClips/StreetOCRDemoVideo/
+	b. Increase scale to reduce window size or decrease scale to increase window size
 2. To annotate license plate for 1 vehicle, process is straightforward
 	a. Press start button when vehicle enters the frame
 	b. Annotate the vehicle
