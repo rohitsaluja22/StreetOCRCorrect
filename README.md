@@ -66,8 +66,8 @@ The next Module takes "Suggestions" generated in ExtractClips/. Make sure you ha
 # Module2: Using StreetOCRCorrect
 cd ..
 1. In params.cfg: only edit the folder name, it should be relative or absolute w.r.t the exe.
-	 EXAMPLE1: folder_name = ExtractClips/StreetOCRDemoVideo/
-2. To annotate for 1 vehicle, process is straightforward
+	 EXAMPLE: folder_name = ExtractClips/StreetOCRDemoVideo/
+2. To annotate license plate for 1 vehicle, process is straightforward
 	a. Press start button when vehicle enters the frame
 	b. Annotate the vehicle
 	c. By default entry is 1st frame of the clip and exit is last frame of the clip.
@@ -76,16 +76,17 @@ cd ..
 	e. Press exit button at the last frame with visible and readable license plate.
 	f. Verify/edit the best suggestion out of the 5 (or less) suggestions shown and click Submit button to the 
 	right of the suggestion that you choose.
-3. You can fast forward the video playback speed using the slider above.
-4. You can pause/play the video by clicking on the video frame or use Ctrl+Z. You can do that to pause and annotate when fast forwarding. 
+3. Click Next Video or Ctrl+N to load the next video in UI.
+4. You can fast forward the video playback speed using the slider above.
+5. You can pause/play the video by clicking on the video frame or use Ctrl+Z. You can do that to pause and annotate when fast forwarding. 
 	Click once: Video will be paused
 	Click again: Video will resume
-5. You can rewind a video by 5, 10 or 15 seconds at a time.
+6. You can rewind a video by 5, 10 or 15 seconds at a time.
 	NOTE: if you rewind a video to the point where a previously 
 	annotated car is ENTERING the frame, you will have to
 	annotate such cars again from that point.
-6. To skip/reset a submission after clicking start and end frames, submit an empty annotation. The system will ignore and reset buttons.
-7. To override start position again on an already green button, click on the button again to register an update before clicking.
-8. Video will start after the last annotated vehicle from the logs.
-9. Keep code and .cfg file both, in same folder
-10. Do not delete or modify the log files that are generated.
+7. To skip/reset a submission after clicking start and end frames, submit an empty annotation. The system will ignore and reset buttons.
+8. To override start position again on an already green button, click on the button again to register an update before clicking.
+9. Video will start after the last annotated vehicle from the logs.
+10. Keep code and .cfg file both, in same folder
+11. Do not delete or modify the log files that are generated.
