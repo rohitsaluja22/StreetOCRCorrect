@@ -7,9 +7,9 @@ The demo video of the backend model used in our framework is available here: htt
 # Module1: Steps to Extract Multiple Single Vehicle Video Clips:
 
 # Installations (Tested on Ubuntu 16.04 with 4GB GeForce 940MX):
-install opencv and pydarknet from https://pypi.org/project/yolo34py/ i.e.:-
+On python 3.6, install opencv and pydarknet from https://pypi.org/project/yolo34py/ i.e.:-
 ```
-#use "virtualenv -p python3 StreetOCR" if using virtual environment
+#use "virtualenv -p python3.6 StreetOCR" if using virtual environment
 pip3 install opencv-python
 pip3 install opencv_contrib-python # For MedianFlow Tracker
 pip3 install numpy
