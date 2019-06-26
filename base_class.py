@@ -200,7 +200,7 @@ class Skeleton():
 		self.log_list = []
 		# restore frame from logs
 		self.f.seek(0)
-		lines = self.f.readlines()
+		lines = self.f.readlines()[1:]
 		restore_frame = int(lines[-1].split("\t")[END_FRAME_IDX]) if lines != [] else 0
 		if(restore_frame >= self.length):
 			restore_frame = 0

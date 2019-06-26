@@ -186,6 +186,7 @@ class Application(Skeleton):
 		self.ID = restore_ID + 1
 		print("Restoring ID to: %d"%self.ID)
 		print("%s, ON ID:%d"%(self.get_localtime(),self.ID), file=self.f_time_log, flush=True)
+		print("S.No.\tFile Name\t\t\t\t\tAnnotation\tFrom\tTo",file=self.f,flush=True)
 		self.reset()
 		self.vs.set(cv2.CAP_PROP_POS_FRAMES, restore_frame)
 		self.frame_no = restore_frame
@@ -308,7 +309,7 @@ class Application(Skeleton):
 	def submit(self,text_box):
 		if self.submit_box["state"] == tk.DISABLED:
 			return
-		corrected_text = self.filename+"--"+text_box.get().replace(" ","")#self.variable.get().replace(" ","")
+		corrected_text = self.filename+"\t"+text_box.get().replace(" ","")#self.variable.get().replace(" ","")
 		#check = self.frame_e <= self.frame_x
 		start = self.frame_e
 		end = self.frame_x
