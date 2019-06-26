@@ -64,22 +64,23 @@ The above steps will extract and store single vehicle clips in a new folder "Ext
 The next Module takes "Suggestions" generated in ExtractClips/. Make sure you have copied Suggestions.txt to folder "StreetOCRCorrect/"
 
 # Module2: Using StreetOCRCorrect
+
+1. In params.cfg: 
+	(a) only edit the folder name, it should be relative or absolute w.r.t the exe.
+	   EXAMPLE: folder_name = ExtractClips/StreetOCRDemoVideo/
+	(b) Increase scale to reduce window size or decrease scale to increase window size	
 ```
 cd ..
 python3 video_streamer.py
 ```
-1. In params.cfg: 
-	a. only edit the folder name, it should be relative or absolute w.r.t the exe.
-	   EXAMPLE: folder_name = ExtractClips/StreetOCRDemoVideo/
-	b. Increase scale to reduce window size or decrease scale to increase window size
 2. To annotate license plate for 1 vehicle, process is straightforward
-	a. Press start button when vehicle enters the frame
-	b. Annotate the vehicle
-	c. By default entry is 1st frame of the clip and exit is last frame of the clip.
-	d. If license plate is not visible/readable at the entry of a vehicle in the clip, then you can press entry
+	(a) Press start button when vehicle enters the frame
+	(b) Annotate the vehicle
+	(c) By default entry is 1st frame of the clip and exit is last frame of the clip.
+	(d) If license plate is not visible/readable at the entry of a vehicle in the clip, then you can press entry
 	button from the point where license plate is visible and readable.
-	e. Press exit button at the last frame with visible and readable license plate.
-	f. Verify/edit the best suggestion out of the 5 (or less) suggestions shown and click Submit button to the 
+	(e) Press exit button at the last frame with visible and readable license plate.
+	(f) Verify/edit the best suggestion out of the 5 (or less) suggestions shown and click Submit button to the 
 	right of the suggestion that you choose.
 3. Click Next Video or Ctrl+N to load the next video in UI.
 4. You can fast forward the video playback speed using the slider above.
