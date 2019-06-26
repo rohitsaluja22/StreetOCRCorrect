@@ -37,8 +37,12 @@ chmod +x StreetOCRDemo/ANPR_UbuntuDemo
 Optional: Download and trim youtube video:-
 ```
 Download one of the videos with highest resolution given in downloadYoutubeChaoticVideos
+Best video to try demo is https://www.youtube.com/watch?v=77MpjKvOgz0
 rename the downloaded video as 001.mp4
-avconv -i 001.mp4 -ss 00:01:27 -t 00:00:5 -codec copy input.mp4 # (Ignore if you want to run on complete video) 
+
+#For try the demo on 5 secs of video:-
+avconv -i 001.mp4 -ss 00:00:06 -t 00:00:05 -codec copy input.mp4 
+#(Ignore if you want to run on complete video) 
 ```
 
 # Usage for Module1 for extracting single vehicle clips via Detection and Tracking on Demo Video:
@@ -46,8 +50,11 @@ avconv -i 001.mp4 -ss 00:01:27 -t 00:00:5 -codec copy input.mp4 # (Ignore if you
 Come back to ExtractClips folder in older (or a new) tab, and move the demo mp4 file from StreetOCRDemo/ to ExtractClips/:-
 cd ExtractClips
 mv StreetOCRDemo/StreetOCRDemoVideo.mp4 .
-python3 extractCropVideosJson.py StreetOCRDemoVideo.mp4 1# make last term 0 or omit it if you DO NOT want to rotate video by 180 degrees while reading
-python3 parse_json_videogen.py --file StreetOCRDemoVideo.mp4 --Rotate180Flag 1 > Suggestions # make Rotate180Flag as 0 if you DO NOT want to rotate video by 180 degrees while reading/writing
+python3 extractCropVideosJson.py StreetOCRDemoVideo.mp4 1
+# make last term 0 or omit it if you DO NOT want to rotate video by 180 degrees while reading
+
+python3 parse_json_videogen.py --file StreetOCRDemoVideo.mp4 --Rotate180Flag 1 > Suggestions
+# make Rotate180Flag as 0 if you DO NOT want to rotate video by 180 degrees while reading/writing
 cp Suggestions ../../StreetOCRCorrect
 ```
 The above steps will extract and store single vehicle clips in a new folder "ExtractClips/StreetOCRDemoVideo". The same are also present in StreetOCRDemo/StreetOCRDemoVideoSingleVehicleClips to match (or check in case you are not able to run this).
