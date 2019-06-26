@@ -184,7 +184,7 @@ class VideoGen:
 				x,y,w,h = bbox
 				conf = 0
 				pred, conf = self.test_model(imgcv,x,y,w,h)
-				if (conf < 0.0001) or (conf is None) : continue#TO DO REVIEW THIS LOGIC
+				if (conf < 0.001) or (conf is None) : continue#TO DO REVIEW THIS LOGIC
 				if int(ID) not in self.suggDict:
 					#print("here1")
 					self.suggDict[int(ID)] = {}
