@@ -70,6 +70,7 @@ class Skeleton():
 		self.fps = self.vs.get(cv2.CAP_PROP_FPS)
 		self.vid_width = int(self.vs.get(cv2.CAP_PROP_FRAME_WIDTH))
 		self.vid_height = int(self.vs.get(cv2.CAP_PROP_FRAME_HEIGHT))
+		self.frame_no = 0
 		print("fps:",self.fps)
 		self.length = self.vs.get(cv2.CAP_PROP_FRAME_COUNT)
 		print("length:",self.length)
