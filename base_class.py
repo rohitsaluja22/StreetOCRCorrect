@@ -56,8 +56,9 @@ class Skeleton():
 		mypath = self.config['INPUT']['folder_name'].strip()
 		#print(mypath)
 		if(self.FirstVideoFlag):
-			self.onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and (not (f.split(".")[-1] == "txt")))]
-			self.FirstVideoFlag = 0
+			#self.onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and (not (f.split(".")[-1] == "txt")))]
+			#self.FirstVideoFlag = 0
+			self.onlyfiles = list(sorted(self.suggestions.keys())
 		self.filename = mypath + self.onlyfiles[self.fileIndent]
 		print(self.filename)
 		self.filename_pref, ext = os.path.splitext(self.filename)
