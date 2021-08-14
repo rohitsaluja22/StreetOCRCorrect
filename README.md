@@ -1,4 +1,5 @@
 # StreetOCRCorrect
+Framework for [paper](https://www.cse.iitb.ac.in/~ganesh/papers/icdarost2019.pdf) at ICDAR'19.
 
 # Demo
 The demo video of the backend model used in our framework is available here: https://drive.google.com/open?id=1xetAEINYOlS-HUgFj71DRMtdr8FMVBtc. This demonstrates the use of multi-frame consensus in our framework.
@@ -97,3 +98,18 @@ python3 video_streamer.py
 9. Video will start after the last annotated vehicle from the logs.
 10. Keep code and .cfg file both, in same folder
 11. Do not delete or modify the log files that are generated.
+
+#Citation
+If you use this work, please add following citation:-
+
+```
+@inproceedings{singh2019streetocrcorrect,
+  title={Street{OCRC}orrect: {A}n {I}nteractive {F}ramework for {OCR} {C}orrections in {C}haotic {I}ndian {S}treet {V}ideos},
+  author={Singh, Pankaj and Patwa, Bhavya and Saluja, Rohit and Ramakrishnan, Ganesh and Chaudhuri, Parag},
+  booktitle={2019 International Conference on Document Analysis and Recognition Workshops (ICDARW)},
+  volume={2},
+  pages={36--40},
+  year={2019},
+  organization={IEEE}
+}
+```
